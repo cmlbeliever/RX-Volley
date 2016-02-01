@@ -2,6 +2,7 @@ package com.cml.lib.rxvolley.rxvolley;
 
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -20,14 +21,10 @@ public class GsonRequest<T> extends JsonRequest<T> {
     private Gson gson = new Gson();
     private Class<?> target;
 
-    public GsonRequest(int method, String url, String requestBody, Response.Listener<T> listener, Response.ErrorListener errorListener) {
-        super(method, url, requestBody, listener, errorListener);
-        target = Object.class;
-    }
-
     public GsonRequest(Class<?> target, int method, String url, String requestBody, Response.Listener<T> listener, Response.ErrorListener errorListener) {
         super(method, url, requestBody, listener, errorListener);
         this.target = target;
+        setRetryPolicy(new DefaultRetryPolicy(1, 1, 1f));
     }
 
     @Override
