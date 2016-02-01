@@ -16,5 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="cancelRequest"
+        android:background="#0F0"
         android:text="Hello World!"/>
 </RelativeLayout>

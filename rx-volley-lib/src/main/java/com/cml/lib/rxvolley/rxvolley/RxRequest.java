@@ -2,9 +2,12 @@ package com.cml.lib.rxvolley.rxvolley;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.RequestFuture;
 import com.cml.lib.rxvolley.framework.RequestManager;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -16,6 +19,9 @@ import rx.schedulers.Schedulers;
  * 将Volley请求封装成RxJava结构返回，注意：所有的请求都在IO线程中处理
  */
 public class RxRequest {
+
+    private static ConcurrentHashMap<String, Boolean> requestMap = new ConcurrentHashMap<String, Boolean>();
+
     /**
      * 发送post请求
      *
@@ -68,8 +74,11 @@ public class RxRequest {
 
         final RequestFuture<T> requestFuture = RequestFuture.newFuture();
 
-        GsonRequest request = new GsonRequest(target, method, url, null, requestFuture, requestFuture);
+        final GsonRequest<T> request = new GsonRequest<T>(target, method, url, null, requestFuture, requestFuture);
         request.setRetryPolicy(retryPolicy);
+        request.setTag(url);
+
+        requestFuture.setRequest(request);
 
         RequestManager.getRequestQueue().add(request);
 
@@ -78,16 +87,36 @@ public class RxRequest {
             @Override
             public void call(Subscriber<? super T> subscriber) {
                 try {
-                    if (!subscriber.isUnsubscribed()) {
+                    if (!subscriber.isUnsubscribed() && !requestFuture.isCancelled() && allowObserval(request.getUrl())) {
                         subscriber.onNext(requestFuture.get());
                     }
                     subscriber.onCompleted();
+                    requestMap.remove(request.getUrl());
                 } catch (InterruptedException e) {
                     subscriber.onError(e);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
             }
+
+            private boolean allowObserval(String url) {
+                return !requestMap.contains(url)||requestMap.get(url);
+            }
         }).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 取消请求
+     *
+     * @param url
+     */
+    public static void cancel(final String url) {
+        RequestManager.getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return request.getTag().equals(url);
+            }
+        });
+        requestMap.put(url, true);
     }
 }

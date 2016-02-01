@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.cml.lib.rxvolley.rxvolley.RxRequest;
 
 import rx.Subscriber;
 
 public class MainActivity extends AppCompatActivity {
+    String url = "https://raw.githubusercontent.com/cml8655/note/master/data/test.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://raw.githubusercontent.com/cml8655/note/master/data/test.json";
+
                 RxRequest.<MyModel>post(url, MyModel.class).subscribe(new Subscriber<MyModel>() {
                     @Override
                     public void onCompleted() {
@@ -49,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public void cancelRequest(View v) {
+        Toast.makeText(this,"cancel",Toast.LENGTH_LONG).show();
+        RxRequest.cancel(url);
     }
 
     @Override
