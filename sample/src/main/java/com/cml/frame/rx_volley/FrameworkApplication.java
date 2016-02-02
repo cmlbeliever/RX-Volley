@@ -27,7 +27,6 @@ public class FrameworkApplication extends Application {
      * 初始化volley以及图片缓存信息
      */
     private void initVolley() {
-        // 设定volley缓存
         RequestManager.init(this);
         ImageCacheManager.getInstance().init(this, this.getPackageCodePath(),
                 ImageCaches.Disk.Size, ImageCaches.Disk.Format, ImageCaches.Disk.Quality,
