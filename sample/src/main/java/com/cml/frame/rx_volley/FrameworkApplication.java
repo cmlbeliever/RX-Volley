@@ -29,10 +29,6 @@ public class FrameworkApplication extends Application {
     private void initVolley() {
         // 设定volley缓存
         RequestManager.init(this);
-        /**
-         * Create the image cache. Uses Memory Cache by default. Change to Disk
-         * for a Disk based LRU implementation. 设置缓存为100MB
-         */
         ImageCacheManager.getInstance().init(this, this.getPackageCodePath(),
                 ImageCaches.Disk.Size, ImageCaches.Disk.Format, ImageCaches.Disk.Quality,
                 ImageCacheManager.CacheType.DISK);
