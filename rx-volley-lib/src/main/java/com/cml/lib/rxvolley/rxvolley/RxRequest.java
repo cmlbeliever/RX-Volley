@@ -7,8 +7,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.RequestFuture;
 import com.cml.lib.rxvolley.framework.RequestManager;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
@@ -19,8 +17,6 @@ import rx.schedulers.Schedulers;
  * 将Volley请求封装成RxJava结构返回，注意：所有的请求都在IO线程中处理
  */
 public class RxRequest {
-
-    private static ConcurrentHashMap<String, Boolean> requestMap = new ConcurrentHashMap<String, Boolean>();
 
     /**
      * 发送post请求
@@ -80,28 +76,22 @@ public class RxRequest {
 
         requestFuture.setRequest(request);
 
-        RequestManager.getRequestQueue().add(request);
-
         return Observable.create(new Observable.OnSubscribe<T>() {
 
             @Override
             public void call(Subscriber<? super T> subscriber) {
                 try {
-                    if (!subscriber.isUnsubscribed() && !requestFuture.isCancelled() && allowObserval(request.getUrl())) {
+                    //只在被订阅后才进行网络请求处理
+                    RequestManager.getRequestQueue().add(request);
+                    if (!subscriber.isUnsubscribed() && !requestFuture.isCancelled()) {
                         subscriber.onNext(requestFuture.get());
+                        subscriber.onCompleted();
                     }
-                    subscriber.onCompleted();
-                    requestMap.remove(request.getUrl());
-                } catch (InterruptedException e) {
-                    subscriber.onError(e);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
             }
 
-            private boolean allowObserval(String url) {
-                return !requestMap.contains(url)||requestMap.get(url);
-            }
         }).subscribeOn(Schedulers.io());
     }
 
@@ -117,6 +107,5 @@ public class RxRequest {
                 return request.getTag().equals(url);
             }
         });
-        requestMap.put(url, true);
     }
 }
