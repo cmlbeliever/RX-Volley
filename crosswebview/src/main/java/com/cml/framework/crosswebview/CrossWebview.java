@@ -75,10 +75,11 @@ public class CrossWebview extends WebView {
 
     /**
      * 调用js的方法
+     *
      * @param alias
      * @param object
      */
-    public void callJs(String alias, JSONObject object) {
+    public void callJs(final String alias, final JSONObject object) {
 
         if (object.optInt(NATIVE_ID, -1) == -1) {
             if (Log.isLoggable(TAG, Log.WARN)) {
@@ -87,8 +88,13 @@ public class CrossWebview extends WebView {
             return;
         }
 
-        String jsFormat = "javascript:window.%sExtension.callbackJs(%s)";
-        loadUrl(String.format(jsFormat, alias, object.toString()));
+        post(new Runnable() {
+            @Override
+            public void run() {
+                String jsFormat = "javascript:window.%sExtension.callbackJs(%s)";
+                loadUrl(String.format(jsFormat, alias, object.toString()));
+            }
+        });
     }
 
     static class JsBuilder {

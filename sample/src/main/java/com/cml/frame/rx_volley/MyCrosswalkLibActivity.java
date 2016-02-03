@@ -67,20 +67,21 @@ public class MyCrosswalkLibActivity extends AppCompatActivity {
     class MyExtension extends Extension {
         @Override
         @JavascriptInterface
-        public void postMessage(int instanceId, final String message) {
-            webView.post(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        JSONObject paramObject = new JSONObject(message);
-                        JSONObject object = new JSONObject();
-                        object.put("native_id", paramObject.getInt("native_id"));
-                        object.put("result", "我是系统返回：" + System.currentTimeMillis());
-                        webView.callJs("native", object);
-                    } catch (Exception e) {
-                    }
-                }
-            });
+        public void postMessage(int instanceId, final String message, boolean isSync) {
+            try {
+                //模拟很长业务处理
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            try {
+                JSONObject paramObject = new JSONObject(message);
+                JSONObject object = new JSONObject();
+                object.put("native_id", paramObject.getInt("native_id"));
+                object.put("result", "我是系统返回："+isSync + System.currentTimeMillis());
+                webView.callJs("native", object);
+            } catch (Exception e) {
+            }
         }
     }
 }
