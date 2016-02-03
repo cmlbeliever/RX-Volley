@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">CrossWebview</string>
+     <string name="js_format">
+        window.#{alias}Exports={};
+        window.#{alias}Extension={};
+        var #{alias}Counter = 0;
+        var #{alias}SuccessCbs = {};
+
+        window.#{alias}Extension.callbackJs=function (message) {
+          var data=message;
+          var cb;
+          if(data.native_id){
+            cb = #{alias}SuccessCbs[data.native_id];
+          };
+          if (cb) {
+              cb(data);
+          };
+        };
+
+        window.#{alias}Exports.callNative = function(params,callback) {
+          if(callback){
+            #{alias}Counter++;
+            #{alias}SuccessCbs[#{alias}Counter] = callback;
+          }
+          try{
+            params = JSON.parse(params);
+          }catch(e){
+          }
+         window.#{alias}.postMessage(#{alias}Counter,JSON.stringify({
+                native_id: #{alias}Counter,
+                params: params
+              }));
+        };
+    </string>
+</resources>

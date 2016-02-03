@@ -1,4 +1,45 @@
 <resources>
     <string name="app_name">Rx-Volley</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_my_crosswalk">MyCrosswalkActivity</string>
+    <string name="js">
+          exports={
+            send:function(){
+                alert(111111);
+                }
+           };
+        exports.send();
+    </string>
+    <string name="js2">
+        window.exports={};
+        window.extension={};
+        var counter = 0;
+        var successCbs = {};
+
+        window.extension.callbackJs=function (message) {
+          var data=message;
+          var cb;
+          if(data.native_id){
+            cb = successCbs[data.native_id];
+          };
+          if (cb) {
+              cb(data);
+          };
+        };
+
+        window.exports.storeCallback = function(params,callback) {
+          if(callback){
+            counter++;
+            successCbs[counter] = callback;
+          }
+          try{
+            params = JSON.parse(params);
+          }catch(e){
+          }
+         window.nativeApp.postMsg(counter,JSON.stringify({
+                native_id: counter,
+                params: params
+              }));
+        };
+    </string>
 </resources>

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String url = "https://raw.githubusercontent.com/cml8655/note/master/data/test.json";
                 RxRequest.<MyModel>post(url, MyModel.class).subscribe(new Subscriber<MyModel>() {
                     @Override
                     public void onCompleted() {

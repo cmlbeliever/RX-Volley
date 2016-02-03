@@ -6,15 +6,26 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".FrameworkApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".FrameworkApplication"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".MyCrosswalkActivity"
+            android:label="@string/title_activity_my_crosswalk"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".MyCrosswalkLibActivity"
+            android:label="@string/title_activity_my_crosswalk"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

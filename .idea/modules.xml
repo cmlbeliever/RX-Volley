@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RX-Volley.iml" filepath="$PROJECT_DIR$/RX-Volley.iml" />
+      <module fileurl="file://$PROJECT_DIR$/crosswebview/crosswebview.iml" filepath="$PROJECT_DIR$/crosswebview/crosswebview.iml" />
       <module fileurl="file://$PROJECT_DIR$/rx-volley-lib/rx-volley-lib.iml" filepath="$PROJECT_DIR$/rx-volley-lib/rx-volley-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>
