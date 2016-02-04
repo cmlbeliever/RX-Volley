@@ -32,7 +32,6 @@
               }),true);
         };
          window.#{alias}Exports.callAsyncNative = function(params,callback) {
-         alert(22);
           if(callback){
             #{alias}Counter++;
             #{alias}SuccessCbs[#{alias}Counter] = callback;
@@ -44,7 +43,7 @@
          window.#{alias}.postAsyncMessage(#{alias}Counter,JSON.stringify({
                 native_id: #{alias}Counter,
                 params: params
-              }),false);
+              }));
         };
     </string>
 </resources>

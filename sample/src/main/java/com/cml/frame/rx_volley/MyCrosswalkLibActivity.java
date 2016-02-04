@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
@@ -65,8 +64,7 @@ public class MyCrosswalkLibActivity extends AppCompatActivity {
     }
 
     class MyExtension extends Extension {
-        @Override
-        @JavascriptInterface
+
         public void postMessage(int instanceId, final String message, boolean isSync) {
             try {
                 //模拟很长业务处理

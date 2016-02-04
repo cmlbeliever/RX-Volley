@@ -9,13 +9,12 @@
     <title>Document</title>
     <script type="text/javascript">
        function testCall(){
-/**
- //同步调用
+
+        //同步调用 别名+Exports :如 nativeAppExports
           nativeExports.callNative({name:"同步调用"},function(res){
              alert("callback 同步:"+JSON.stringify(res));
            });
 
-*/
         //异步调用
         nativeExports.callAsyncNative({name:"异步调用"},function(res){
                alert("callback:异步 "+JSON.stringify(res));

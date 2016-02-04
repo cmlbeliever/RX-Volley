@@ -3,9 +3,13 @@ package com.cml.framework.crosswebview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
 import org.json.JSONObject;
@@ -21,7 +25,6 @@ public class CrossWebview extends WebView {
     private static final String TAG = CrossWebview.class.getSimpleName();
 
     public static final String NATIVE_ID = "native_id";
-
     private Map<String, Extension> extensions = new HashMap<String, Extension>();
 
     public CrossWebview(Context context) {
@@ -65,8 +68,8 @@ public class CrossWebview extends WebView {
         if (extensions.containsKey(alias)) {
             return;
         }
+        super.addJavascriptInterface(new ProxyExtension(extension), alias);
         this.extensions.put(alias, extension);
-        super.addJavascriptInterface(extension, alias);
 
         String baseJs = new JsBuilder(getContext(), alias).build();
 
@@ -95,6 +98,43 @@ public class CrossWebview extends WebView {
                 loadUrl(String.format(jsFormat, alias, object.toString()));
             }
         });
+    }
+
+    public static class ProxyExtension {
+
+        private Handler asyncHandler;
+        private Extension extension;
+
+        public ProxyExtension(Extension extension) {
+            this.extension = extension;
+            HandlerThread thread = new HandlerThread("DefaultExtension");
+            thread.start();
+            asyncHandler = new Handler(thread.getLooper()) {
+                @Override
+                public void handleMessage(Message msg) {
+                    postMessage(msg.arg1, (String) msg.obj, false);
+                }
+            };
+        }
+
+        @JavascriptInterface
+        public void postMessage(int instanceId, String message, boolean isSync) {
+            this.extension.postMessage(instanceId, message, isSync);
+        }
+
+        /**
+         * 异步处理消息
+         *
+         * @param instanceId
+         * @param message
+         */
+        @JavascriptInterface
+        public void postAsyncMessage(final int instanceId, final String message) {
+            Message msg = asyncHandler.obtainMessage();
+            msg.arg1 = instanceId;
+            msg.obj = message;
+            asyncHandler.sendMessage(msg);
+        }
     }
 
     static class JsBuilder {
