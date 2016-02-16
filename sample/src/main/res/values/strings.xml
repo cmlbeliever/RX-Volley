@@ -42,4 +42,5 @@
               }));
         };
     </string>
+    <string name="title_activity_permission">PermissionActivity</string>
 </resources>
