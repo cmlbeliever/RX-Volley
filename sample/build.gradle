@@ -29,5 +29,7 @@ dependencies {
     compile 'com.trello:rxlifecycle:0.3.0'
     compile 'com.trello:rxlifecycle-components:0.3.0'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.cjj.materialrefeshlayout:library:1.3.0'
 
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
