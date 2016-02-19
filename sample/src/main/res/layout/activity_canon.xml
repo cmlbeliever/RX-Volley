@@ -1,58 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    >
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.cml.frame.rx_volley.myscroller.MyScroller
+        android:id="@+id/scroller"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#F99"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true"
-        android:paddingTop="20dp"
+        android:layout_height="match_parent"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:orientation="horizontal">
-
-            <SeekBar
-                android:id="@+id/seekbar"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#0f0"
-                android:max="255"/>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/login_icon_qq"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="title测试"/>
-        </LinearLayout>
-
-    </android.support.v7.widget.Toolbar>
-
-    <com.cml.frame.rx_volley.myscroller.MyScroller
-        android:id="@+id/scroller"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#0f0"></View>
+
 
             <ImageView
                 android:layout_width="match_parent"
@@ -60,10 +30,54 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ss"/>
 
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#0f0"
+                android:max="255"/>
+
 
         </LinearLayout>
 
     </com.cml.frame.rx_volley.myscroller.MyScroller>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/toolbarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:padding="0dp">
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="right"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="title测试"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+</FrameLayout>

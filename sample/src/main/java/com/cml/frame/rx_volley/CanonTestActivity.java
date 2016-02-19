@@ -1,9 +1,10 @@
 package com.cml.frame.rx_volley;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 
@@ -12,7 +13,7 @@ import com.cml.frame.rx_volley.myscroller.MyScroller;
 /**
  * Created by cmlBeliever on 2016/2/19.
  */
-public class CanonTestActivity extends AppCompatActivity {
+public class CanonTestActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,14 @@ public class CanonTestActivity extends AppCompatActivity {
 //        Window window = getWindow();
 //        window.requestFeature(Window.FEATURE_NO_TITLE);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        try {
+//            this.requestWindowFeature(Window.FEATURE_NO_TITLE);//去掉标题栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
 
 
@@ -55,14 +62,20 @@ public class CanonTestActivity extends AppCompatActivity {
 
 //
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
+
+        final View toolbarContainer = findViewById(R.id.toolbarContainer);
 
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekbar);
         seekBar.setMax(255);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                toolbar.setAlpha(progress/255f);
+                toolbarContainer.setAlpha(progress / 255f);
+
+//                if(progress<=100){
+//                    toolbarContainer.setBackgroundColor(Color.TRANSPARENT);
+//                }
 //                tr.setTintAlpha(progress / 255f);
 //                tr.setTintColor(Color.BLUE);
 //                tr.setNavigationBarAlpha(progress / 255f);
